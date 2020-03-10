@@ -1,4 +1,4 @@
-FROM coqorg/base:latest
+FROM coqorg/base:4.09.0-flambda
 
 ARG BUILD_DATE
 ARG VCS_REF
@@ -21,7 +21,7 @@ ENV COQ_VERSION="${COQ_VERSION}"
 ENV COQ_EXTRA_OPAM="coq-bignums"
 
 RUN ["/bin/bash", "--login", "-c", "set -x \
-  && eval $(opam env --switch=${COMPILER_EDGE} --set-switch) \
+  && eval $(opam env --switch=${COMPILER} --set-switch) \
   && opam repository add --all-switches --set-default coq-extra-dev https://coq.inria.fr/opam/extra-dev \
   && opam repository add --all-switches --set-default coq-core-dev https://coq.inria.fr/opam/core-dev \
   && opam update -y -u \
@@ -29,15 +29,3 @@ RUN ["/bin/bash", "--login", "-c", "set -x \
   && opam install -y -v -j ${NJOBS} coq ${COQ_EXTRA_OPAM} \
   && opam clean -a -c -s --logs \
   && opam config list && opam list"]
-
-RUN ["/bin/bash", "--login", "-c", "set -x \
-  && eval $(opam env --switch=${COMPILER} --set-switch) \
-  && opam update -y -u \
-  && opam pin add -n -y -k git coq.${COQ_VERSION} \"git+https://github.com/coq/coq#${COQ_COMMIT}\" \
-  && opam install -y -v -j ${NJOBS} coq ${COQ_EXTRA_OPAM} \
-  && opam clean -a -c -s --logs \
-  && opam config list && opam list"]
-
-# Remark: The bash scripts above guarantee both opam switches have the
-# same version of Coq; "opam pin add -n -k version coq ${COQ_VERSION}"
-# (with COQ_VERSION=dev) would be too imprecise.
