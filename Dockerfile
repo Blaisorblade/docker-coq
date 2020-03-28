@@ -17,17 +17,17 @@ RUN ["/bin/bash", "--login", "-c", "set -x \
   && opam clean -a -c -s --logs \
   && opam config list && opam list"]
 
-RUN ["/bin/bash", "--login", "-c", "set -x \
-  && eval $(opam env --switch=${COMPILER} --set-switch) \
-  && opam update -y -u \
-  && opam pin add -n -y  --locked=docker -k git coq.${COQ_VERSION} \"git+https://github.com/coq/coq#${COQ_COMMIT}\" \
-  && opam install -y -v -j ${NJOBS} coq ${COQ_EXTRA_OPAM} \
-  && opam clean -a -c -s --logs \
-  && opam config list && opam list"]
+# RUN ["/bin/bash", "--login", "-c", "set -x \
+#   && eval $(opam env --switch=${COMPILER} --set-switch) \
+#   && opam update -y -u \
+#   && opam pin add -n -y  --locked=docker -k git coq.${COQ_VERSION} \"git+https://github.com/coq/coq#${COQ_COMMIT}\" \
+#   && opam install -y -v -j ${NJOBS} coq ${COQ_EXTRA_OPAM} \
+#   && opam clean -a -c -s --logs \
+#   && opam config list && opam list"]
 
-# Remark: The bash scripts above guarantee both opam switches have the
-# same version of Coq; "opam pin add -n -k version coq ${COQ_VERSION}"
-# (with COQ_VERSION=dev) would be too imprecise.
+# # Remark: The bash scripts above guarantee both opam switches have the
+# # same version of Coq; "opam pin add -n -k version coq ${COQ_VERSION}"
+# # (with COQ_VERSION=dev) would be too imprecise.
 
 ARG BUILD_DATE
 ARG VCS_REF
