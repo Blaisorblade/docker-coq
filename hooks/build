@@ -24,7 +24,7 @@ echo "VCS_REF: ${VCS_REF}"
 echo "COQ_COMMIT: ${COQ_COMMIT}"
 echo "COQ_VERSION: ${COQ_VERSION}"
 
-exec docker build --rm --force-rm \
+exec docker build --pull --rm --force-rm \
   --build-arg=BUILD_DATE="${BUILD_DATE}" \
   --build-arg=VCS_REF="${VCS_REF}" \
   --build-arg=COQ_COMMIT="${COQ_COMMIT}" \
